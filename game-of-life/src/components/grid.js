@@ -17,18 +17,19 @@ const Grid = () => {
     })
     console.log(grid)
  return(
- <div style={{
+ <div 
+     style={{
      display: "grid",
      gridTemplateColumns: `repeat(${theCols}, 20px)`
  }}>
      {grid.map((rows, i) => 
       rows.map((col, k) => 
-     <div 
+     <div className="grid"
      key={`${i}-${k}`}
      style={{width: 20, 
         height: 20, 
         backgroundColor: grid[i][k] ? "blue" : undefined,
-        border: "solid 1px black" }}/>))}
+        border: "solid 1px white" }}/>))}
  </div>
  )
 }
