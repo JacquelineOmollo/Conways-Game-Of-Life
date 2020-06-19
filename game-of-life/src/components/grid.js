@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import {produce} from "immer";
 
 const theRows = 30;
 const theCols = 30;
@@ -26,6 +27,12 @@ const Grid = () => {
       rows.map((col, k) => 
      <div className="grid"
      key={`${i}-${k}`}
+     onClick={() => {
+         const anotherGrid = produce(grid, gridCopy => {
+             gridCopy[i][k] = grid[i] [k] ? dead : alive
+         })
+         setGrid(anotherGrid)
+     }}
      style={{width: 20, 
         height: 20, 
         backgroundColor: grid[i][k] ? "blue" : undefined,
