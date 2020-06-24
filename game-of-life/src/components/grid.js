@@ -1,15 +1,16 @@
 import React, {useState, useCallback, useRef} from "react";
 import {produce} from "immer";
+import {Button, ButtonGroup} from "reactstrap";
 
 
-const theRows = 40;
-const theCols = 40;
+const theRows = 25;
+const theCols = 30;
 const dead = 0;
 const alive = 1;
 
 
 const Grid = () => {
-    //Eight cells of grid 
+    //Eight operations of grid 
     const operations = [
         [0, 1],
         [0, -1],
@@ -20,7 +21,8 @@ const Grid = () => {
         [-1, 0],
         [1, -1]
     ] 
-
+    
+    // generates an empty grid in the dead state
     const generateEmptyGrid = () => {
         const rows = [];
             for(let i = 0; i < theRows; i++){
@@ -28,6 +30,8 @@ const Grid = () => {
             }
             return rows;
     }
+
+
      
    const [grid, setGrid] = useState(() =>{
         return generateEmptyGrid()
@@ -41,6 +45,8 @@ const Grid = () => {
         if (!runRef.current){
             return
         }
+
+    
     
      // simulation starts here 
      // referance the operations to find neighbors   
@@ -53,9 +59,11 @@ const Grid = () => {
                         const anotherI = i + x
                         const anotherJ = j + y
                         if (anotherI >= 0 && anotherI < theRows && anotherJ >= 0 && anotherJ < theCols) {
-                            neighbors += cell[anotherI][anotherJ]
+                             neighbors += cell[anotherI][anotherJ]
                         }
                     })
+
+        
                     // checks neighbors to see if it dies or grows
                     if (neighbors < 2 || neighbors > 3){
                         anotherGrid[i][j] = 0
@@ -67,12 +75,20 @@ const Grid = () => {
         })    
     })
     // speed of simulation demo
-    setTimeout(runDemo, 500)
+    setTimeout(runDemo, 50)
     }, [])
-    
+
+    // generation: 0,
+	// 		anotherGrid( Array(theRows).fill().map(() => Array(theCols).fill(false)))
+    // setGrid({
+    //     anotherGrid[i][j] = 0
+    //     generation={generation + 1}
+    // })
+
 return(
-    <>
-    <button
+<>
+    <ButtonGroup className="btn_group" >
+    <Button color="success" 
         onClick={() => {
         setRunning(!running);
         if (!running) {
@@ -81,31 +97,34 @@ return(
         }
         }}>
         {running ? "stop" : "start"}
-    </button>
+    </Button>
 
-    <button
+    <Button color="success" 
         onClick={() => {
         const rows = [];
         for (let i = 0; i < theRows; i++) {
             rows.push(
-            Array.from(Array(theCols), () => (Math.random() > 0.5 ? 1 : 0))
+            Array.from(Array(theCols), () => (Math.random() > 0.7 ? alive : dead))
             );
         }
         setGrid(rows);
         }}
     >
         random
-    </button>
+    </Button>
 
-    <button
+    <Button color="success" 
         onClick={() => {
         setGrid(generateEmptyGrid());
+        // generation: 0
         }}
     >
     clear
-    </button>
+    </Button>
+    </ButtonGroup>
 
-    <div
+    <div className="box"> 
+    <div 
         style={{
         display: "grid",
         gridTemplateColumns: `repeat(${theCols}, 20px)`
@@ -125,12 +144,13 @@ return(
             width: 20, 
             height: 20, 
             backgroundColor: grid[i][j] ? "blue" : undefined,
-            border: "solid 1px white" }}
+            border: "solid 1px rgb(6, 68, 6)" }}
         />
         ))
     )}
     </div>
-    </>
+    </div> 
+</>
   )
 }
 
