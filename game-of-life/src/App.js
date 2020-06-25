@@ -5,6 +5,7 @@ import About from "../src/components/about";
 
 
 
+
 function App() {
   
   return (
@@ -12,7 +13,6 @@ function App() {
      <h1>The Game of Life</h1>
       <Grid/>
       <About/>
-      
     </div>
   );
 }

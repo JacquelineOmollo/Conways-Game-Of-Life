@@ -1,6 +1,9 @@
 import React, {useState, useCallback, useRef} from "react";
 import {produce} from "immer";
 import {Button, ButtonGroup} from "reactstrap";
+import NextGen from "./generation";
+
+
 
 
 
@@ -40,6 +43,7 @@ const Grid = () => {
     //Acts as the double buffer setup useing useRef 
     // Makes reference of current and holds state and returns the copy if current is not displayed
     const [running, setRunning] = useState(false)
+    const [generation] = useState(0)
     const runRef = useRef(running)
     runRef.current = running
     const runDemo = useCallback(() => {
@@ -74,14 +78,16 @@ const Grid = () => {
         })    
     })
     // speed of simulation demo
-    setTimeout(runDemo, 900)
+    setTimeout(runDemo, 100)
     }, [operations])
 
     
 return(
 <>
     {/* Button function */}
+    
     <ButtonGroup className="btn_group" >
+    
     <Button color="success" 
         onClick={() => {
         setRunning(!running);
@@ -91,14 +97,17 @@ return(
         }
         }}>
         {running ? "stop" : "start"}
-    </Button>
+    
+     </Button>
 
+   
+    
     <Button color="success" 
         onClick={() => {
         const rows = [];
         for (let i = 0; i < theRows; i++) {
             rows.push(
-            Array.from(Array(theCols), () => (Math.random() > 0.8 ? alive : dead))
+            Array.from(Array(theCols), () => (Math.random() > 0.7? alive : dead))
             );
         }
         setGrid(rows);
@@ -115,11 +124,11 @@ return(
     >
     clear
     </Button>
+    <NextGen generation={generation} />
     </ButtonGroup>
-
     
-
-    {/* This is where the grid maps to create a copy, onClick with dead of alive with random colors  */}
+    
+ {/* This is where the grid maps to create a copy, onClick with dead of alive with random colors  */}
      <div className="box"> 
     <div 
         style={{
@@ -148,6 +157,9 @@ return(
         ))
     )}
     </div>
+    
+            
+
     </div> 
 </>
   )
