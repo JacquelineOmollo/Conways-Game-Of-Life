@@ -1,5 +1,5 @@
 body {
-  background-image: url(http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/squares.png) 
+  background-image: url("../../game-of-life/src/assets/wall-bricks-220182.jpg")
   
 }
 
@@ -12,14 +12,18 @@ body {
  margin-top: 20px;
 }
 
+.thish3{
+  margin: auto;
+ }
 
 .box {
   margin-left: 25%;
-  
 }
 
 p {
-  color: white;
+  color:black ;
+  background-color: white;
+  box-shadow: 0px 0px 20px black;
 }
 
 .btn_group{
@@ -32,18 +36,36 @@ p {
   width: 150px;
   line-height: 0;
   margin: auto;
-  box-shadow: 0px 0px 20px white;
+  box-shadow: 0px 0px 20px black;
 }
-  
-.side{
+
+.card {
+  width: 100%;
+}
+
+.themed-container .card{
   display: flex;
-}
-h1, h2, h3, h4 {
+  flex-direction: column-reverse;
+  margin: 10px;
+} 
+  
+.image{
+  display: flex;
+  justify-content: left;
+  width: 20%;
+} 
+
+h1{
   color: rgb(6, 68, 6);
   margin: auto;
   text-align: center;
   width: 50%;
   margin-top: 10px;
+}
+
+h3{
+  color: rgb(6, 68, 6);
+   margin-left: 240px;
 }
 
 h4 {

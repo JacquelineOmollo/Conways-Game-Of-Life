@@ -1,12 +1,14 @@
-import React, {useState, useCallback, useRef} from "react";
+import React, {useState, useCallback, useRef, useEffect} from "react";
 import {produce} from "immer";
 import {Button, ButtonGroup} from "reactstrap";
+
 
 
 const theRows = 25;
 const theCols = 30;
 const dead = 0;
 const alive = 1;
+const colors = ["black", "blue", "green", "purple"];
 
 
 const Grid = () => {
@@ -22,20 +24,31 @@ const Grid = () => {
         [1, -1]
     ] 
     
-    // generates an empty grid in the dead state
+    // generates an empty grid in the dead state 
     const generateEmptyGrid = () => {
-        const rows = [];
+            const rows = [];
             for(let i = 0; i < theRows; i++){
                 rows.push(Array.from(Array(theCols), () => dead));
             }
             return rows;
     }
-
-
      
    const [grid, setGrid] = useState(() =>{
         return generateEmptyGrid()
     })
+
+
+   
+     useEffect(() => {
+        if (anotherGrid){
+        setTimeout(setGeneration({generation: generation + 1}))
+        }
+    }, [anotherGrid])
+    
+    const [generation, setGeneration] = useState(0)
+
+
+
     //Acts as the double buffer setup useing useRef 
     // Makes reference of current and holds state and returns the copy if current is not displayed
     const [running, setRunning] = useState(false)
@@ -46,9 +59,7 @@ const Grid = () => {
             return
         }
 
-    
-    
-     // simulation starts here 
+    // simulation starts here 
      // referance the operations to find neighbors   
     setGrid(cell => {
         return produce(cell, anotherGrid => {
@@ -75,18 +86,13 @@ const Grid = () => {
         })    
     })
     // speed of simulation demo
-    setTimeout(runDemo, 50)
-    }, [])
+    setTimeout(runDemo, 900)
+    }, [operations])
 
-    // generation: 0,
-	// 		anotherGrid( Array(theRows).fill().map(() => Array(theCols).fill(false)))
-    // setGrid({
-    //     anotherGrid[i][j] = 0
-    //     generation={generation + 1}
-    // })
-
+    
 return(
 <>
+    {/* Button function */}
     <ButtonGroup className="btn_group" >
     <Button color="success" 
         onClick={() => {
@@ -104,7 +110,7 @@ return(
         const rows = [];
         for (let i = 0; i < theRows; i++) {
             rows.push(
-            Array.from(Array(theCols), () => (Math.random() > 0.7 ? alive : dead))
+            Array.from(Array(theCols), () => (Math.random() > 0.8 ? alive : dead))
             );
         }
         setGrid(rows);
@@ -116,14 +122,20 @@ return(
     <Button color="success" 
         onClick={() => {
         setGrid(generateEmptyGrid());
-        // generation: 0
+       
         }}
     >
     clear
     </Button>
+    
+
+    <h3>Gerneration: {generation} </h3>
     </ButtonGroup>
 
-    <div className="box"> 
+    
+
+    {/* This is where the grid maps to create a copy, onClick with dead of alive with random colors  */}
+     <div className="box"> 
     <div 
         style={{
         display: "grid",
@@ -133,17 +145,19 @@ return(
         {grid.map((rows, i) => 
             rows.map((col, j) => (
         <div className="grid"
-            key={`${i}-${j}`}
+            key={`${i}_${j}`}
             onClick={() => {
             const anotherGrid = produce(grid, gridCopy => {
-                gridCopy[i][j] = grid[i][j] ? dead : alive
+               gridCopy[i][j] = grid[i][j] ? dead : alive
+               gridCopy = generation + 1
             })
             setGrid(anotherGrid)
-        }}
+         }}
+
         style={{
             width: 20, 
             height: 20, 
-            backgroundColor: grid[i][j] ? "blue" : undefined,
+            backgroundColor: grid[i][j] ? colors[Math.floor(Math.random(255) * colors.length)] : undefined,
             border: "solid 1px rgb(6, 68, 6)" }}
         />
         ))
