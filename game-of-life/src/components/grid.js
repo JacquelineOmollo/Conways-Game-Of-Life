@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useRef, useEffect} from "react";
+import React, {useState, useCallback, useRef} from "react";
 import {produce} from "immer";
 import {Button, ButtonGroup} from "reactstrap";
 
@@ -36,18 +36,6 @@ const Grid = () => {
    const [grid, setGrid] = useState(() =>{
         return generateEmptyGrid()
     })
-
-
-   
-     useEffect(() => {
-        if (anotherGrid){
-        setTimeout(setGeneration({generation: generation + 1}))
-        }
-    }, [anotherGrid])
-    
-    const [generation, setGeneration] = useState(0)
-
-
 
     //Acts as the double buffer setup useing useRef 
     // Makes reference of current and holds state and returns the copy if current is not displayed
@@ -127,9 +115,6 @@ return(
     >
     clear
     </Button>
-    
-
-    <h3>Gerneration: {generation} </h3>
     </ButtonGroup>
 
     
@@ -149,7 +134,7 @@ return(
             onClick={() => {
             const anotherGrid = produce(grid, gridCopy => {
                gridCopy[i][j] = grid[i][j] ? dead : alive
-               gridCopy = generation + 1
+               
             })
             setGrid(anotherGrid)
          }}
