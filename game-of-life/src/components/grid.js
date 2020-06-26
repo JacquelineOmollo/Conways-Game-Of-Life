@@ -67,7 +67,7 @@ const Grid = () => {
                     })
 
         
-                    // checks neighbors to see if it dies or grows
+                    // checks neighbors to see if it dies or lives
                     if (neighbors < 2 || neighbors > 3){
                         anotherGrid[i][j] = 0
                     } else if (cell[i][j] === 0 && neighbors === 3) {

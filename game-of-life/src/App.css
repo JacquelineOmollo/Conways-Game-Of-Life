@@ -46,7 +46,7 @@ p {
 .themed-container .card{
   display: flex;
   flex-direction: column-reverse;
-  margin: 10px;
+  /* margin: 10px; */
 } 
   
 .image{
