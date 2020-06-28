@@ -2,9 +2,7 @@ import React, {useState, useCallback, useRef} from "react";
 import {produce} from "immer";
 import {Button, ButtonGroup} from "reactstrap";
 import NextGen from "./generation";
-
-
-
+import  CountUp, {useCountUp}  from 'react-countup';
 
 
 const theRows = 25;
@@ -13,8 +11,8 @@ const dead = 0;
 const alive = 1;
 const colors = ["black", "blue", "green", "purple"];
 
-
 const Grid = () => {
+
     //Eight operations of grid 
     const operations = [
         [0, 1],
@@ -32,6 +30,7 @@ const Grid = () => {
             const rows = [];
             for(let i = 0; i < theRows; i++){
                 rows.push(Array.from(Array(theCols), () => dead));
+                
             }
             return rows;
     }
@@ -43,7 +42,7 @@ const Grid = () => {
     //Acts as the double buffer setup useing useRef 
     // Makes reference of current and holds state and returns the copy if current is not displayed
     const [running, setRunning] = useState(false)
-    const [generation] = useState(0)
+    const [generation, setGeneration] = useState(0)
     const runRef = useRef(running)
     runRef.current = running
     const runDemo = useCallback(() => {
@@ -74,35 +73,41 @@ const Grid = () => {
                         anotherGrid[i][j] = 1
                     }
                }
-            }  
-        })    
+            } 
+
+        }) 
+
+        
+           
+    })
+
+    setGeneration((prevGen) => {
+        const next = prevGen + 1
+        return next
     })
     // speed of simulation demo
-    setTimeout(runDemo, 100)
+    setTimeout(runDemo,100)
     }, [operations])
 
+    
     
 return(
 <>
     {/* Button function */}
     
     <ButtonGroup className="btn_group" >
-    
-    <Button color="success" 
-        onClick={() => {
-        setRunning(!running);
+    <Button color="success"
+     onClick={() => {
+       setRunning(!running);
         if (!running) {
             runRef.current = true;
-            runDemo();
+            runDemo( );
         }
-        }}>
+        }} >
         {running ? "stop" : "start"}
-    
-     </Button>
-
-   
-    
-    <Button color="success" 
+       </Button>
+  
+   <Button color="success" 
         onClick={() => {
         const rows = [];
         for (let i = 0; i < theRows; i++) {
@@ -118,16 +123,15 @@ return(
 
     <Button color="success" 
         onClick={() => {
-        setGrid(generateEmptyGrid());
-       
+        setGrid(generateEmptyGrid())
         }}
     >
     clear
     </Button>
-    <NextGen generation={generation} />
+    <h3>Generation: {generation}</h3>
     </ButtonGroup>
-    
-    
+   
+   
  {/* This is where the grid maps to create a copy, onClick with dead of alive with random colors  */}
      <div className="box"> 
     <div 
@@ -157,9 +161,6 @@ return(
         ))
     )}
     </div>
-    
-            
-
     </div> 
 </>
   )
